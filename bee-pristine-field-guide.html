@@ -1,0 +1,738 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bee Pristine Field Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: single-column reference. Navy brand band, teal accents, Poppins throughout. Jump menu up top, floating back-to-top. */
+:root{
+  --bg:#f4f6f9; --surface:#ffffff; --fg:#0D1B2A; --muted:#5b6673;
+  --accent:#2A9D8F; --accent-strong:#0F6E56; --navy:#0D1B2A; --on-navy:#ffffff;
+  --navy-sub:#A7BACB; --border:#E3E7EC; --chip:#eef2f5; --warn:#8a5a10; --warn-bg:#fbf1d8;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0b1017; --surface:#131b24; --fg:#e9eef3; --muted:#9aa6b2;
+  --accent:#49c3b4; --accent-strong:#5fd0bf; --navy:#0a131d; --on-navy:#f3f7fa;
+  --navy-sub:#8fa3b5; --border:#27323d; --chip:#1b2530; --warn:#e8c879; --warn-bg:#2a2512;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0b1017; --surface:#131b24; --fg:#e9eef3; --muted:#9aa6b2;
+  --accent:#49c3b4; --accent-strong:#5fd0bf; --navy:#0a131d; --on-navy:#f3f7fa;
+  --navy-sub:#8fa3b5; --border:#27323d; --chip:#1b2530; --warn:#e8c879; --warn-bg:#2a2512;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+img{max-width:100%}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--fg);
+  font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  font-size:16px;line-height:1.6;-webkit-text-size-adjust:100%}
+.wrap{max-width:760px;margin-inline:auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px))}
+.band{background:var(--navy)}
+.hero{padding-block:30px 26px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+.hero h1{font-size:30px;font-weight:700;line-height:1.15;color:var(--on-navy);margin:0;text-wrap:balance}
+.hero p{margin:10px 0 0;color:var(--navy-sub);font-size:15px;max-width:52ch}
+nav.toc{display:grid;grid-template-columns:1fr 1fr;column-gap:20px;margin-top:18px}
+@media (max-width:340px){nav.toc{grid-template-columns:1fr}}
+nav.toc a{display:flex;align-items:center;gap:11px;padding:11px 4px;font-size:15.5px;font-weight:500;
+  color:var(--on-navy);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.10)}
+nav.toc a:last-child{border-bottom:0}
+nav.toc a::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;background:var(--accent)}
+nav.toc a:hover{color:var(--accent)}
+nav.toc a:hover::before{box-shadow:0 0 0 3px rgba(42,157,143,.25)}
+nav.toc a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+main{padding-block:8px 48px}
+.guide{scroll-margin-top:18px;padding-block:26px;border-bottom:1px solid var(--border)}
+.guide:last-child{border-bottom:0}
+.guide.feature{background:rgba(42,157,143,.09);border:1px solid var(--accent);border-radius:14px;padding:22px 18px;margin:12px 0 0}
+.guide.feature h2,.guide.feature .guide-num{color:var(--accent-strong)}
+.guide-num{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-strong);margin:0 0 4px}
+.guide h2{font-size:23px;font-weight:700;margin:0 0 6px;line-height:1.2;text-wrap:balance}
+.intro{color:var(--muted);margin:0 0 6px}
+h3{font-size:15px;font-weight:600;margin:20px 0 8px;color:var(--fg)}
+ul,ol{margin:0;padding-left:20px}
+li{margin:7px 0}
+li strong{color:var(--fg);font-weight:600}
+.tell{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);
+  border-radius:10px;padding:12px 14px;margin-top:14px;color:var(--muted);font-size:14.5px}
+.tell strong{color:var(--fg)}
+.warn{background:var(--warn-bg);border:1px solid var(--warn);border-radius:10px;padding:12px 14px;margin:14px 0;color:var(--fg);font-size:14.5px;line-height:1.55}
+.warn strong{color:var(--warn)}
+.toplink{position:fixed;right:max(14px,env(safe-area-inset-right,0px));
+  bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:20;
+  display:inline-flex;align-items:center;gap:6px;padding:10px 14px;border-radius:999px;
+  background:var(--accent);color:#06211c;font-family:inherit;font-size:13px;font-weight:600;
+  border:0;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.22);opacity:0;pointer-events:none;transition:opacity .2s}
+.toplink.show{opacity:1;pointer-events:auto}
+footer{padding-block:22px 30px;color:var(--muted);font-size:13px;text-align:center}
+footer a{color:var(--accent-strong);text-decoration:none}
+footer .brand{font-weight:600;color:var(--fg)}
+@media (max-width:420px){ .hero h1{font-size:25px} .guide h2{font-size:21px} }
+</style>
+</head>
+<body>
+
+<div class="band">
+  <div class="wrap hero">
+    <p class="eyebrow">Bee Pristine Guide</p>
+    <h1>Cleaner Field Guide</h1>
+    <p>Quick reference for the situations you run into on the job. Tap a topic to jump to it. When in doubt on any surface, use the gentlest option and ask.</p>
+    <nav class="toc">
+      <a href="#limescale">Limescale</a>
+      <a href="#pets">Pets</a>
+      <a href="#furniture">Polishing Furniture</a>
+      <a href="#countertops">Countertops</a>
+      <a href="#breakage">Room Scan and Breakage</a>
+      <a href="#washerdryer">Washer and Dryer</a>
+      <a href="#dishwasher">Dishwasher and Sinks</a>
+      <a href="#oven">Oven</a>
+      <a href="#tilegrout">Tile and Grout</a>
+      <a href="#adhesive">Glue and Stickers</a>
+      <a href="#fridge">Fridge</a>
+      <a href="#carpet">Carpet and Upholstery</a>
+      <a href="#highreach">High Windows and Fans</a>
+      <a href="#laundry">Laundry</a>
+      <a href="#bedrooms">Bedrooms</a>
+      <a href="#patio">Patio Furniture</a>
+      <a href="#hazards">Caution and Hazards</a>
+      <a href="#clogs">Clogged Sinks and Toilets</a>
+      <a href="#pests">Pests and Roaches</a>
+      <a href="#photos" style="font-weight:700">Before and After Photos</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <section class="guide" id="limescale">
+    <p class="guide-num">Guide 01</p>
+    <h2>Limescale</h2>
+    <p class="intro">Limescale is the white, chalky, crusty buildup left behind by hard water. Houston has hard water, so you will see it often, mostly on faucets, showerheads, glass shower doors, tubs, sinks, toilets, and tile.</p>
+
+    <h3>First choice products (good to carry)</h3>
+    <ul>
+      <li><strong>CLR (Calcium, Lime, Rust).</strong> Strong and fast on faucets, tubs, showerheads, tile, and glass. Avoid on natural stone, aluminum, and colored grout. Never mix with bleach.</li>
+      <li><strong>Bar Keepers Friend.</strong> Great on stainless steel, chrome, porcelain, and glass shower doors. It is a mild abrasive, so rub gently. Avoid on natural stone and polished finishes.</li>
+      <li><strong>Lime-A-Way.</strong> Good for bathroom limescale, toilet bowls, and faucets. Same acid cautions as CLR.</li>
+      <li><strong>The Pink Stuff (paste).</strong> A gentler scrubbing paste for hard water film on glass, tile, chrome, and sinks. Reach for this when you want something less harsh.</li>
+      <li><strong>Zep Calcium, Lime and Rust.</strong> Commercial strength for heavy, built up deposits.</li>
+    </ul>
+
+    <h3>Household options (cheap, safe, lighter buildup)</h3>
+    <ul>
+      <li><strong>White vinegar.</strong> Spray on, let it sit 10 to 15 minutes, scrub, then rinse. For faucets and showerheads, tie a bag of vinegar around them and soak. Avoid natural stone. Never mix with bleach.</li>
+      <li><strong>Citric acid powder.</strong> Dissolve in warm water for a strong, low odor descaler. Excellent for showerheads and glass.</li>
+      <li><strong>Lemon juice.</strong> Mild and pleasant smelling. Good for light spots on faucets.</li>
+      <li><strong>Baking soda.</strong> A mild abrasive for scrubbing. Use it as a paste. Do not rely on the vinegar and baking soda fizz, since it weakens both.</li>
+    </ul>
+
+    <h3>Safety rules (read these every time)</h3>
+    <ul>
+      <li><strong>Never use acidic removers on natural stone:</strong> marble, granite, travertine, or limestone. That includes CLR, Lime-A-Way, vinegar, and Bar Keepers Friend. Acid etches and permanently dulls stone.</li>
+      <li><strong>Never mix any acid with bleach.</strong> It creates toxic gas.</li>
+      <li><strong>Wear gloves, keep the area ventilated, and test a hidden spot first.</strong></li>
+      <li>Do not leave acidic products on chrome or finished metals longer than the label says, and rinse well.</li>
+      <li>When unsure of a surface, use the gentlest option (vinegar or The Pink Stuff) or stop and ask.</li>
+    </ul>
+
+    <h3>Quick technique by surface</h3>
+    <ul>
+      <li><strong>Faucets and showerheads:</strong> soak in vinegar or diluted CLR using a tied plastic bag for 20 to 30 minutes, then scrub with an old toothbrush and rinse.</li>
+      <li><strong>Glass shower doors:</strong> The Pink Stuff or vinegar, scrub, then squeegee dry. Drying after every clean slows buildup.</li>
+      <li><strong>Tubs and sinks:</strong> Bar Keepers Friend or CLR, let it dwell, scrub with a non scratch pad, then rinse.</li>
+      <li><strong>Toilet bowl ring:</strong> an acidic bowl cleaner, or a pumice stone used wet and gently. Only on white porcelain, never colored or coated.</li>
+      <li><strong>Tile and grout:</strong> an acidic cleaner works, but keep it off natural stone tile and colored grout.</li>
+    </ul>
+
+    <div class="tell"><strong>What to tell the customer:</strong> hard water limescale is normal in Houston. Regular cleaning plus drying wet surfaces keeps it from building back fast. Heavy buildup may take an extra dwell or a second pass, which the walkthrough covers.</div>
+  </section>
+
+  <section class="guide" id="pets">
+    <p class="guide-num">Guide 02</p>
+    <h2>Pets</h2>
+    <p class="intro">With pets, two things come up most: hair everywhere, and odor from accidents. Some cleaning products are also harmful to animals, so part of the job is cleaning well without putting the pet at risk.</p>
+
+    <h3>Pet hair removal (tools and tricks)</h3>
+    <ul>
+      <li><strong>Rubber broom or rubber bristle brush.</strong> The best tool for pulling embedded hair out of carpet, rugs, and upholstery. Drag it in one direction and the hair balls up.</li>
+      <li><strong>Pet hair stone or pumice stone.</strong> Rub lightly over carpet and upholstery to lift stubborn hair. Test gently on delicate fabric.</li>
+      <li><strong>Squeegee or damp rubber gloves.</strong> Run a squeegee or a damp gloved hand over couches and carpet. The hair gathers into clumps you can pick up.</li>
+      <li><strong>Lint rollers.</strong> A quick finish for lampshades, cushions, and smaller soft surfaces.</li>
+      <li><strong>Vacuum with a pet attachment.</strong> Vacuum first, before you wipe or dust. Empty the canister often in heavy hair homes.</li>
+      <li><strong>Dryer sheet on baseboards.</strong> Wiping with a dryer sheet cuts static so hair does not cling back to the trim.</li>
+    </ul>
+
+    <h3>Odor and accidents (the enzyme rule)</h3>
+    <ul>
+      <li><strong>Use an enzyme cleaner for urine, feces, or vomit.</strong> Enzyme cleaners such as Nature's Miracle or Rocco and Roxie break down the odor source instead of covering it. This is the only reliable fix for pet urine. Masking sprays do not work.</li>
+      <li><strong>Blot, do not rub.</strong> On a fresh accident, blot up as much as you can first. Rubbing spreads it and pushes it deeper.</li>
+      <li><strong>Let the enzyme cleaner dwell.</strong> Apply generously, let it sit for the time on the label, then blot. Set in stains may need a second treatment.</li>
+      <li><strong>Baking soda for general odor.</strong> Sprinkle on carpet or upholstery, let it sit, then vacuum.</li>
+      <li><strong>Ventilate.</strong> Open a window or move some air. Fresh air does more than a scented spray.</li>
+    </ul>
+
+    <h3>Products to avoid around pets (safety)</h3>
+    <ul>
+      <li><strong>Avoid ammonia based cleaners.</strong> Ammonia smells like urine to a dog or cat and can make them mark the same spot again. The fumes are also harsh.</li>
+      <li><strong>Be careful with phenol cleaners</strong> such as some Pine Sol and Lysol type products. Phenols are toxic to cats especially. If you use one, rinse well and keep pets off until dry.</li>
+      <li><strong>Watch out for essential oil products.</strong> Many oils, including tea tree, are toxic to cats and dogs. Do not assume a natural oil based cleaner is pet safe.</li>
+      <li><strong>Keep bleach and strong disinfectants off pet areas,</strong> or rinse thoroughly. Pets walk on the floor and lick their paws.</li>
+      <li><strong>Never leave buckets of water or open product out.</strong> A pet may drink it. Keep lids closed and supplies up high.</li>
+    </ul>
+
+    <h3>Keeping the pet safe during the visit</h3>
+    <ul>
+      <li><strong>Ask the owner to secure pets before you start.</strong> A crate or closed room keeps the pet calm and lets you work faster.</li>
+      <li><strong>Watch the doors</strong> coming and going so a pet does not slip outside.</li>
+      <li><strong>Do not assume a pet is friendly.</strong> Let it come to you, move calmly, and never corner it.</li>
+      <li><strong>Keep pets out of wet or freshly cleaned areas until dry.</strong></li>
+    </ul>
+
+    <div class="tell"><strong>What to ask and tell the customer:</strong> ask how many pets, how heavy the shedding is, and whether there are problem spots such as a favorite couch or past accident areas. Ask them to secure pets during the visit. Set in odors or old stains may need dwell time or a second visit, so they are not caught off guard.</div>
+  </section>
+
+  <section class="guide" id="furniture">
+    <p class="guide-num">Guide 03</p>
+    <h2>Polishing Furniture</h2>
+    <p class="intro">Match what you use to the surface. The wrong product on the wrong finish can dull or damage a customer's furniture. Dust first, go light, and when in doubt, do less.</p>
+
+    <h3>The golden rule: dust first</h3>
+    <ul>
+      <li><strong>Always dust before you polish.</strong> Polishing over grit drags it across the surface and leaves fine scratches.</li>
+      <li><strong>Use a clean microfiber cloth, not paper towels.</strong> Paper towels can scratch fine finishes.</li>
+    </ul>
+
+    <h3>Match the product to the finish</h3>
+    <ul>
+      <li><strong>Sealed or finished wood (most furniture).</strong> A quality furniture polish or wood cream, or just mild dish soap and warm water.</li>
+      <li><strong>Laminate, veneer, or engineered wood.</strong> Damp microfiber and a mild cleaner, then dry. Skip oily polishes, which smear and build up.</li>
+      <li><strong>Antique or waxed wood.</strong> A proper wax or conditioner, not a silicone spray. When in doubt, dust only and check with the office.</li>
+      <li><strong>High gloss or lacquered.</strong> Buff gently with microfiber. Avoid anything abrasive.</li>
+      <li><strong>Leather furniture.</strong> A leather cleaner or conditioner, never wood furniture polish.</li>
+      <li><strong>Glass, stone, or metal tops.</strong> These are not wood. Glass cleaner for glass, a stone safe cleaner for marble or granite. Never acid on stone.</li>
+    </ul>
+
+    <h3>Products and tools</h3>
+    <ul>
+      <li><strong>Microfiber cloths (your main tool).</strong> One cloth to apply, a second dry one to buff. Keep them lint free.</li>
+      <li><strong>Everyday sealed wood, spray polish:</strong> Pledge, Method Wood for Good, Guardsman Furniture Polish, or Weiman. Spray onto the cloth, not the furniture, and go light.</li>
+      <li><strong>Dull or dry wood, cream or conditioner:</strong> Howard Feed-N-Wax, Guardsman Revitalizing Wood Polish, or Scott's Liquid Gold. A little goes a long way.</li>
+      <li><strong>Scratches on wood:</strong> Old English Scratch Cover, in a dark wood and a light wood version. Match it to the piece.</li>
+      <li><strong>Antiques or deeper protection:</strong> a paste wax such as Howard Citrus-Shield or Minwax Paste Finishing Wax, or lemon oil. Use sparingly, and avoid silicone sprays on antiques.</li>
+      <li><strong>Leather furniture:</strong> Weiman or Lexol Leather Cleaner and Conditioner. Never use wood polish on leather.</li>
+    </ul>
+
+    <h3>How to polish</h3>
+    <ul>
+      <li><strong>Apply polish to the cloth, not the furniture.</strong> This prevents over application, streaks, and buildup.</li>
+      <li><strong>Work with the grain of the wood.</strong></li>
+      <li><strong>Use thin coats.</strong> Too much polish leaves a greasy film that streaks and attracts dust.</li>
+      <li><strong>Buff with a second dry cloth</strong> to bring out the shine and remove excess.</li>
+      <li><strong>Keep moisture off wood.</strong> Standing water causes rings and can lift the finish.</li>
+    </ul>
+
+    <h3>What to avoid</h3>
+    <ul>
+      <li><strong>No glass cleaner or all purpose cleaner on wood.</strong> Ammonia and harsh cleaners can strip or cloud a wood finish.</li>
+      <li><strong>Do not mix waxes and silicone sprays.</strong> Layering causes cloudy buildup that is hard to remove.</li>
+      <li><strong>Do not over polish.</strong> Buildup makes surfaces smeary and attracts more dust.</li>
+      <li><strong>No acidic products on stone or marble tops.</strong> They etch and dull permanently.</li>
+      <li><strong>Test a hidden spot first on anything antique or unfamiliar,</strong> or dust only and check with the office.</li>
+    </ul>
+
+    <div class="tell"><strong>What to ask the customer:</strong> which pieces they want polished, and whether any are antiques or have a special finish. Those may need a specific product or a dust only approach. Confirming up front protects their furniture and protects you.</div>
+  </section>
+
+  <section class="guide" id="countertops">
+    <p class="guide-num">Guide 04</p>
+    <h2>Countertops</h2>
+    <p class="intro">The material matters more than almost any other surface in the home. The wrong product, especially an acid on natural stone, can permanently dull or stain an expensive counter.</p>
+
+    <h3>The safe default (when you are not sure)</h3>
+    <ul>
+      <li><strong>When you do not know what a counter is made of, use warm water with a little dish soap and a microfiber cloth.</strong> It is safe on almost every surface.</li>
+      <li><strong>Hold off on acids and abrasives until you know the material.</strong> If it looks like stone, treat it as stone.</li>
+    </ul>
+
+    <h3>Countertop types and the best products</h3>
+    <ul>
+      <li><strong>Granite (sealed natural stone).</strong> A stone cleaner such as Weiman Granite and Stone, Granite Gold, or Method Daily Granite, or mild dish soap and warm water. Avoid vinegar, lemon, bleach, and abrasive powders.</li>
+      <li><strong>Marble (very acid sensitive).</strong> A pH neutral stone cleaner or mild soap and water only. Never anything acidic, including vinegar, lemon, or many all purpose sprays. Marble etches and spots easily. Wipe spills right away.</li>
+      <li><strong>Quartz (engineered, such as Caesarstone or Silestone).</strong> Mild dish soap and water, or a quartz safe cleaner like Method or Weiman Quartz. Avoid bleach, abrasive pads, and strong solvents. For dried gunk, a plastic scraper, never metal.</li>
+      <li><strong>Laminate (Formica).</strong> Forgiving. A general all purpose cleaner or soap and water. Avoid abrasive scrubbers, and do not let water sit in the seams.</li>
+      <li><strong>Butcher block or wood.</strong> Mild soap and water, then wipe dry. Never soak it. Diluted vinegar is fine here, unlike on stone. No furniture polish or wax on a food surface.</li>
+      <li><strong>Stainless steel.</strong> Soap and water or a stainless cleaner like Weiman Stainless Steel, wiped with the grain. Avoid abrasive pads and bleach or chloride cleaners.</li>
+      <li><strong>Solid surface (Corian).</strong> Soap and water or a mild cleaner. A soft scrub lifts stains on matte, but go gentle on high gloss.</li>
+      <li><strong>Tile and grout.</strong> A general cleaner for the tile and a grout brush for the lines. Keep acids off natural stone tile and go gentle on colored grout.</li>
+    </ul>
+
+    <h3>General rules for every counter</h3>
+    <ul>
+      <li><strong>Use a soft cloth or non scratch pad,</strong> never steel wool or a harsh scouring powder.</li>
+      <li><strong>For stuck on food, use a plastic scraper, not metal.</strong></li>
+      <li><strong>Wipe up spills quickly,</strong> especially on stone.</li>
+      <li><strong>Do not let cleaning product pool or sit longer than needed.</strong> Rinse and dry.</li>
+      <li><strong>When in doubt on an expensive stone counter, use mild soap and water and ask.</strong></li>
+    </ul>
+
+    <div class="tell"><strong>What to ask the customer:</strong> what the counters are made of, especially whether any are natural stone like granite or marble, so you use the right product. If they are unsure and it looks like stone, treat it as stone. This one question can save a very costly mistake.</div>
+  </section>
+
+  <section class="guide" id="breakage">
+    <p class="guide-num">Guide 05</p>
+    <h2>Room Scan and Breakage Protocol</h2>
+    <p class="intro">Before you clean a room, take a minute to look it over. A quick scan and a photo protect you, the client, and Bee Pristine. Accidents happen. What matters is handling them honestly and right away.</p>
+
+    <h3>Before you start: scan the room</h3>
+    <ol>
+      <li><strong>Scan the room before you touch anything.</strong> Look for fragile or valuable items (glass decor, figurines, picture frames, electronics, vases) and anything already broken, cracked, chipped, loose, or wobbly.</li>
+      <li><strong>Take a photo of the room before you begin.</strong> Capture the whole room, plus a close up of anything fragile or already damaged. This shows the condition before you started.</li>
+      <li><strong>Flag anything already damaged.</strong> Photograph it and let the client know, or text Chuka before you clean, so it is clear it was that way already.</li>
+      <li><strong>Work carefully around fragile items.</strong> Move delicate things gently, or clean around them. If unsure whether to move something, leave it and ask.</li>
+    </ol>
+
+    <h3>If something breaks</h3>
+    <ol>
+      <li><strong>Stop.</strong> Do not keep cleaning, and do not try to hide it.</li>
+      <li><strong>Make the area safe.</strong> Carefully pick up broken glass or sharp pieces and keep pets and children away.</li>
+      <li><strong>Tell the client right away.</strong> Be honest and apologize. Never leave the home without letting them know.</li>
+      <li><strong>Contact Chuka immediately at 832-843-1948.</strong></li>
+      <li><strong>Text Chuka pictures of the incident,</strong> including the broken item and the surrounding area.</li>
+      <li><strong>Do not promise the client anything about payment or replacement.</strong> Let Chuka handle how it is resolved.</li>
+    </ol>
+
+    <div class="tell"><strong>Why this matters:</strong> honesty and a few photos turn an accident into a moment that builds trust. Trying to hide a break is what loses a client. Owning it quickly, with pictures and a call, shows the customer that Bee Pristine stands behind its work.</div>
+  </section>
+
+  <section class="guide" id="washerdryer">
+    <p class="guide-num">Guide 06</p>
+    <h2>Deep Cleaning Washer and Dryer</h2>
+    <p class="intro">Washers and dryers build up detergent residue, mildew, and lint over time. A deep clean keeps them fresh and running safely.</p>
+
+    <h3>Washing machine</h3>
+    <ul>
+      <li><strong>Run a washer cleaning tablet on an empty hot cycle.</strong> Affresh, Tide Washing Machine Cleaner, OxiClean Washing Machine Cleaner, or Glisten. One tablet in the empty drum on the hottest or a dedicated clean cycle.</li>
+      <li><strong>Natural option: white vinegar and baking soda.</strong> Run a hot cycle with two cups of vinegar in the drum, then a short hot cycle with a half cup of baking soda. Do not use both at the same time.</li>
+      <li><strong>Clean the rubber door seal (front loaders).</strong> Wipe inside the gasket folds and remove hair, gunk, and mildew. This is where most front load odor comes from.</li>
+      <li><strong>Wash the detergent drawer.</strong> Pull it out, scrub with a brush and warm soapy water, and clear the dispenser slots.</li>
+      <li><strong>Wipe the drum and glass, then leave the door open to air dry.</strong> An open door between washes prevents mildew.</li>
+    </ul>
+
+    <h3>Dryer</h3>
+    <ul>
+      <li><strong>Clean the lint screen every time,</strong> and wash it with soap and water occasionally to remove dryer sheet residue that blocks airflow.</li>
+      <li><strong>Vacuum out the lint trap housing</strong> and around the drum. Lint buildup is a fire risk.</li>
+      <li><strong>Wipe the drum with a damp cloth</strong> to remove residue, especially after anything melted or inky went through.</li>
+      <li><strong>Wipe the exterior and control panel</strong> with a barely damp cloth.</li>
+    </ul>
+
+    <div class="tell"><strong>Safety:</strong> never mix bleach and vinegar. Keep water out of the control panels. Check the dryer vent for heavy lint, and flag the customer if it needs a full vent cleaning, since that is a fire hazard.</div>
+  </section>
+
+  <section class="guide" id="dishwasher">
+    <p class="guide-num">Guide 07</p>
+    <h2>Deep Cleaning Dishwasher and Sinks</h2>
+    <p class="intro">Dishwashers hide food and grease in the filter, and sinks take a beating. A deep clean removes odor and buildup.</p>
+
+    <h3>Dishwasher</h3>
+    <ul>
+      <li><strong>Clean the filter first.</strong> Twist out the filter at the bottom, then rinse and scrub it under running water. This is the number one source of odor and gunk.</li>
+      <li><strong>Run a dishwasher cleaning tablet on an empty hot cycle.</strong> Affresh Dishwasher Cleaner, Finish Dishwasher Cleaner, or Glisten Dishwasher Magic.</li>
+      <li><strong>Natural option: white vinegar and baking soda.</strong> Place a cup of vinegar upright on the top rack and run a hot cycle, then sprinkle baking soda on the bottom and run a short hot cycle.</li>
+      <li><strong>Wipe the door edges, gasket, and detergent dispenser,</strong> where grime collects out of sight.</li>
+      <li><strong>Clear the spray arm holes</strong> with a toothpick if they look blocked.</li>
+    </ul>
+
+    <h3>Sinks</h3>
+    <ul>
+      <li><strong>Stainless steel:</strong> soap and water or Bar Keepers Friend, wiped with the grain. Avoid bleach and steel wool, which can pit the metal. A drop of oil on a cloth brings back the shine.</li>
+      <li><strong>Porcelain or enamel:</strong> Bar Keepers Friend or a baking soda paste for stains. Avoid harsh abrasives that scratch.</li>
+      <li><strong>Composite or granite sinks:</strong> mild soap only. Avoid abrasives and bleach, which can discolor them.</li>
+      <li><strong>Faucet and handles:</strong> treat hard water buildup with the limescale methods, matched to the metal.</li>
+      <li><strong>Drain and disposal:</strong> baking soda followed by vinegar for odor, then hot water. For the disposal, ice and a little salt, plus citrus peels for a fresh smell.</li>
+    </ul>
+
+    <div class="tell"><strong>What to tell the customer:</strong> a lingering dishwasher smell is almost always the filter. Cleaning it, plus a tablet cycle, usually fixes it.</div>
+  </section>
+
+  <section class="guide" id="oven">
+    <p class="guide-num">Guide 08</p>
+    <h2>Oven Cleaning</h2>
+    <p class="intro">Ovens build up baked on grease and carbon. The right product and dwell time do most of the work, but oven cleaners are strong, so safety matters.</p>
+
+    <h3>Products</h3>
+    <ul>
+      <li><strong>Easy-Off is the standard.</strong> Heavy Duty for tough buildup, or Fume Free for a gentler, lower odor version. Krud Kutter is another option.</li>
+      <li><strong>Natural option: a baking soda paste.</strong> Spread a thick baking soda and water paste inside, leave it overnight, then scrub and wipe. Spray stubborn spots with a little vinegar to help lift them.</li>
+      <li><strong>Oven racks:</strong> soak in hot soapy water or a degreaser, or lay them on a towel with dish soap and let them sit, then scrub.</li>
+    </ul>
+
+    <h3>How to clean</h3>
+    <ul>
+      <li><strong>Remove the racks first</strong> and clean them separately.</li>
+      <li><strong>Apply the cleaner, then let it dwell</strong> for the time on the label, often 20 to 30 minutes, or overnight for baking soda.</li>
+      <li><strong>Scrub, then wipe thoroughly and rinse several times</strong> so no chemical residue is left before the oven is used again.</li>
+      <li><strong>For the glass door,</strong> a baking soda paste or a careful pass with a scraper lifts baked on spots.</li>
+    </ul>
+
+    <div class="tell"><strong>Safety:</strong> Easy-Off is caustic. Wear gloves and eye protection, keep the area ventilated, and keep it off your skin and eyes. Do not use chemical oven cleaner inside a self cleaning oven, since it can damage the coating. For those, run the oven's own self clean cycle and wipe out the ash. Never mix oven cleaner with other chemicals.</div>
+  </section>
+
+  <section class="guide" id="tilegrout">
+    <p class="guide-num">Guide 09</p>
+    <h2>Tile and Grout Cleaning</h2>
+    <p class="intro">Grout is porous and traps dirt, soap scum, and mildew. The tile itself is usually tough, but the grout and the type of tile decide what you can safely use.</p>
+
+    <h3>Products</h3>
+    <ul>
+      <li><strong>Grout cleaners:</strong> Zep Grout Cleaner, Clorox Tilex for mildew, or an oxygen bleach such as OxiClean as a paste for gentler whitening.</li>
+      <li><strong>Natural option: a baking soda paste.</strong> Spread baking soda and water on the grout lines, spray lightly with vinegar on standard tile, let it foam, then scrub. Not on natural stone. See the safety note below.</li>
+      <li><strong>For soap scum and hard water on tile:</strong> CLR or a bathroom cleaner, kept off any natural stone.</li>
+    </ul>
+
+    <h3>Tools and technique</h3>
+    <ul>
+      <li><strong>Use a stiff grout brush or an old toothbrush.</strong> Apply the cleaner, let it dwell, scrub the lines, then rinse.</li>
+      <li><strong>Work top to bottom</strong> on walls so drips do not streak areas you already cleaned.</li>
+      <li><strong>A grout pen</strong> can refresh stained lines after cleaning, if the customer wants it.</li>
+    </ul>
+
+    <div class="tell"><strong>Safety:</strong> never use acidic cleaners such as vinegar, CLR, or acidic grout cleaners on natural stone tile like marble, travertine, or slate. Acid etches and dulls stone permanently. Use a pH neutral stone cleaner instead. On colored grout, test first, since bleach and harsh cleaners can lighten it.</div>
+  </section>
+
+  <section class="guide" id="adhesive">
+    <p class="guide-num">Guide 10</p>
+    <h2>Removing Glue, Gunk, and Old Stickers</h2>
+    <p class="intro">Price stickers, tape residue, and old adhesive come up often. Heat and the right solvent do the work. The trick is lifting it without scratching or damaging the surface underneath.</p>
+
+    <h3>Products</h3>
+    <ul>
+      <li><strong>Goo Gone</strong> is the go to adhesive remover for most surfaces.</li>
+      <li><strong>Rubbing alcohol (isopropyl)</strong> works on glass, metal, and many hard surfaces and dries clean.</li>
+      <li><strong>WD-40 or cooking oil</strong> softens sticker residue, good for glass, metal, and sealed surfaces.</li>
+      <li><strong>A hairdryer</strong> warms and loosens stickers and tape so they peel off cleanly, often with no chemical needed.</li>
+      <li><strong>Goof Off or acetone</strong> for tough adhesive, but only on surfaces that can handle a strong solvent.</li>
+    </ul>
+
+    <h3>Tools and technique</h3>
+    <ul>
+      <li><strong>Warm the sticker with a hairdryer, then peel</strong> slowly from a corner.</li>
+      <li><strong>Apply Goo Gone or oil to leftover residue,</strong> let it sit a minute, then wipe or lift it with a plastic scraper or an old card.</li>
+      <li><strong>Use a razor blade only on glass,</strong> held at a low angle. Never on plastic, paint, or soft finishes.</li>
+      <li><strong>Rinse the surface with soap and water afterward</strong> to remove the oily film Goo Gone leaves.</li>
+    </ul>
+
+    <div class="tell"><strong>Safety:</strong> test any solvent on a hidden spot first. Goo Gone, Goof Off, and acetone can soften or discolor plastics, painted surfaces, and some finishes. On wood, use an oil based remover gently and do not soak it.</div>
+  </section>
+
+  <section class="guide" id="fridge">
+    <p class="guide-num">Guide 11</p>
+    <h2>Fridge Cleaning</h2>
+    <p class="intro">Fridges hold food, so the products you use need to be food safe and non toxic. Skip harsh chemicals inside and use gentle cleaners that rinse clean.</p>
+
+    <h3>Food safe products</h3>
+    <ul>
+      <li><strong>Dish soap and warm water.</strong> The simplest and safest for shelves, drawers, and walls. Rinse and dry.</li>
+      <li><strong>Baking soda and water.</strong> A paste lifts dried spills and neutralizes odor. Safe on all interior surfaces.</li>
+      <li><strong>White vinegar and water (half and half).</strong> Cleans and deodorizes interior plastic and glass. Use a stainless cleaner on a stainless exterior instead.</li>
+      <li><strong>An open box of baking soda</strong> left inside keeps odor down between cleanings.</li>
+      <li><strong>Avoid bleach and harsh all purpose sprays inside the fridge.</strong> They can leave residue and fumes near food.</li>
+    </ul>
+
+    <h3>How to clean</h3>
+    <ul>
+      <li><strong>Empty one section at a time</strong> so cold food is not out too long. A cooler helps for a full deep clean.</li>
+      <li><strong>Remove shelves and drawers and wash them</strong> in the sink. Let glass shelves reach room temperature first so they do not crack under hot water.</li>
+      <li><strong>Wipe the interior walls, door, and gaskets.</strong> Spills collect in the rubber door seals.</li>
+      <li><strong>Clean the exterior</strong> with a stainless cleaner if it is stainless, wiped with the grain, or soap and water otherwise.</li>
+      <li><strong>Vacuum the coils and wipe the drip pan</strong> for a full deep clean, if the customer asks.</li>
+    </ul>
+
+    <div class="tell"><strong>What to tell the customer:</strong> for odor, the fix is usually a wiped down interior, clean gaskets, and an open box of baking soda. Toss expired food first so nothing lingers.</div>
+  </section>
+
+  <section class="guide" id="carpet">
+    <p class="guide-num">Guide 12</p>
+    <h2>Carpet and Upholstery Stain Removal</h2>
+    <p class="intro">Most stains lift if you act fast and work from the outside in. The big rule is blot, never rub, and test any product on a hidden spot first.</p>
+
+    <h3>Products</h3>
+    <ul>
+      <li><strong>Enzyme cleaner</strong> for anything organic (food, pet, drink), such as Nature's Miracle.</li>
+      <li><strong>Dish soap and warm water,</strong> a few drops in water, for most general stains.</li>
+      <li><strong>White vinegar and water</strong> for many spots and for odor.</li>
+      <li><strong>Hydrogen peroxide</strong> for tougher stains on light carpet, but test first since it can lighten color.</li>
+      <li><strong>Dedicated spot cleaners:</strong> Folex, Resolve, or OxiClean for carpet and upholstery.</li>
+      <li><strong>Baking soda</strong> to absorb and deodorize after.</li>
+    </ul>
+
+    <h3>Technique</h3>
+    <ul>
+      <li><strong>Blot up as much as you can first,</strong> working from the edge of the stain inward so it does not spread.</li>
+      <li><strong>Test your cleaner on a hidden area,</strong> especially on upholstery, before using it on the stain.</li>
+      <li><strong>Apply lightly, let it dwell, then blot.</strong> Do not soak the carpet or the pad underneath.</li>
+      <li><strong>Rinse by blotting with clean water,</strong> then press a dry towel down to pull out moisture.</li>
+      <li><strong>Let it dry fully, then vacuum.</strong> A fan speeds drying and prevents mildew.</li>
+    </ul>
+
+    <h3>Quick notes by stain</h3>
+    <ul>
+      <li><strong>Grease or oil:</strong> baking soda first to absorb, then a little dish soap, and blot.</li>
+      <li><strong>Red wine or juice:</strong> blot, then dish soap and water or a spot cleaner. Do not use hot water, which can set it.</li>
+      <li><strong>Pet accidents:</strong> enzyme cleaner and dwell time. See the Pets guide.</li>
+      <li><strong>Check the upholstery tag:</strong> W means a water based cleaner is safe, S means solvent only, and X means vacuum only, no liquids.</li>
+    </ul>
+
+    <div class="tell"><strong>What to tell the customer:</strong> some old or set in stains may not come out fully, and deep or large stains may need a professional carpet cleaner. Set that expectation before you start.</div>
+  </section>
+
+  <section class="guide" id="highreach">
+    <p class="guide-num">Guide 13</p>
+    <h2>High Windows and Ceiling Fans</h2>
+    <p class="intro">Reaching high areas safely matters more than the cleaning itself. Use the right tool, keep stable footing, and never overreach.</p>
+
+    <h3>Tools</h3>
+    <ul>
+      <li><strong>A sturdy step stool or small step ladder.</strong> The main tool for most high work. Make sure it is fully open and locked before you step up.</li>
+      <li><strong>An extendable microfiber or pole duster</strong> for ceiling fans, high corners, and vents without climbing.</li>
+      <li><strong>An extendable squeegee and microfiber pole</strong> for high windows.</li>
+      <li><strong>The pillowcase trick for fan blades:</strong> slide a pillowcase over each blade and pull the dust back into it so it does not fall on the room.</li>
+    </ul>
+
+    <h3>Safety and technique</h3>
+    <ul>
+      <li><strong>Set the ladder or stool on a flat, dry surface.</strong> Never on a rug that can slide or an uneven floor.</li>
+      <li><strong>Keep three points of contact and do not stand on the top step.</strong> If you cannot reach, use a taller ladder or a pole tool. Do not overreach.</li>
+      <li><strong>Dust fan blades with the pillowcase method,</strong> wiping each blade top and bottom.</li>
+      <li><strong>Clean high windows top to bottom,</strong> finishing with a dry microfiber to remove streaks.</li>
+      <li><strong>Move furniture or valuables out from under the area</strong> before you start, in case something drops.</li>
+    </ul>
+
+    <div class="tell"><strong>Safety first:</strong> if a job needs a height you cannot reach safely with your equipment, stop and let Chuka know rather than taking a risk. No window or fan is worth a fall.</div>
+  </section>
+
+  <section class="guide" id="laundry">
+    <p class="guide-num">Guide 14</p>
+    <h2>Laundry</h2>
+    <p class="intro">Laundry is an add on service with its own steps. You will be told the number of loads before the job. Follow the sorting and care steps so clothes come out clean and undamaged.</p>
+
+    <h3>How we handle laundry</h3>
+    <ul>
+      <li><strong>We charge for every two loads.</strong> You will be notified of the number of loads before the cleaning, so you know the scope going in.</li>
+      <li><strong>We use only the client's own soap and products.</strong> Do not bring or substitute detergent, fabric softener, or dryer sheets. Use what the client provides.</li>
+      <li><strong>Follow any special instructions,</strong> such as air dry only or a specific setting. When unsure, ask before you wash.</li>
+    </ul>
+
+    <h3>Separating the laundry</h3>
+    <ul>
+      <li><strong>Sort by color first:</strong> whites, lights, and darks in separate loads so colors do not bleed.</li>
+      <li><strong>Separate heavily soiled or lint heavy items</strong> such as towels and rugs from everyday clothes.</li>
+      <li><strong>Check care labels on anything delicate.</strong> Set aside hand wash only, dry clean only, or delicate items rather than machine washing them.</li>
+      <li><strong>Empty pockets and close zippers,</strong> and turn delicate or printed items inside out.</li>
+    </ul>
+
+    <h3>Washing and drying</h3>
+    <ul>
+      <li><strong>Match the water temperature to the load:</strong> warm or cold for colors and most clothes, hot only for whites, towels, and heavily soiled items. When unsure, cold is safest.</li>
+      <li><strong>Do not overload the machine.</strong> Clothes need room to move to get clean.</li>
+      <li><strong>Check labels before drying.</strong> Air dry anything marked no heat or lay flat. High heat shrinks and damages some fabrics.</li>
+      <li><strong>Clean the lint screen</strong> before or after drying.</li>
+      <li><strong>Fold or hang promptly</strong> so clothes do not wrinkle, following the client's preference.</li>
+    </ul>
+
+    <div class="tell"><strong>What to tell the customer:</strong> confirm anything delicate or special before you wash it. If something is dry clean only or you are unsure, set it aside and let them know rather than risk damaging it.</div>
+  </section>
+
+  <section class="guide" id="bedrooms">
+    <p class="guide-num">Guide 15</p>
+    <h2>Bedrooms and Bed Making</h2>
+    <p class="intro">A well made bed is one of the biggest wow moments in a clean home. The tricky part is usually the duvet cover.</p>
+
+    <h3>Changing linens</h3>
+    <ul>
+      <li><strong>Strip the bed and check for fresh linens</strong> the client has set out. If none are provided, remake the bed neatly with what is on it.</li>
+      <li><strong>Put pillowcases on with the open end facing away</strong> from the center of the bed for a tidy look.</li>
+      <li><strong>Smooth the fitted sheet at all four corners</strong> so it does not pop off.</li>
+    </ul>
+
+    <h3>Duvet covers (the easy way)</h3>
+    <ul>
+      <li><strong>Use the roll method.</strong> Turn the duvet cover inside out and lay it on the bed, place the comforter on top lined up with the cover, then roll both together from the closed end.</li>
+      <li><strong>Reach in, grab the corners, and flip the opening over the roll,</strong> then unroll. The comforter is now inside the cover.</li>
+      <li><strong>Shake it out and even the corners</strong> so the filling sits square, then button or zip it closed.</li>
+    </ul>
+
+    <h3>Finishing the bedroom</h3>
+    <ul>
+      <li><strong>Make the bed crisp:</strong> tuck or fold the top edge, smooth the duvet, and arrange the pillows neatly.</li>
+      <li><strong>Dust surfaces</strong> including nightstands, dressers, headboards, and decor.</li>
+      <li><strong>Clean mirrors, wipe switches and handles,</strong> and empty small trash bins.</li>
+      <li><strong>Vacuum or mop last,</strong> working toward the door.</li>
+    </ul>
+
+    <div class="tell"><strong>What to tell the customer:</strong> ask where fresh linens are kept and how they like the bed finished, such as pillows arranged a certain way or a throw folded at the foot. Small preferences make the room feel personal.</div>
+  </section>
+
+  <section class="guide" id="patio">
+    <p class="guide-num">Guide 16</p>
+    <h2>Patio Furniture</h2>
+    <p class="intro">Outdoor furniture collects pollen, dust, cobwebs, and mildew. Match the cleaner to the material, and let everything dry before putting cushions back.</p>
+
+    <h3>By material</h3>
+    <ul>
+      <li><strong>Plastic or resin:</strong> warm soapy water or an all purpose cleaner, scrubbed with a soft brush, then rinse. For mildew, a diluted vinegar solution or an outdoor cleaner.</li>
+      <li><strong>Metal (aluminum or wrought iron):</strong> soapy water and a soft cloth, then dry it to prevent rust. Rust spots and refinishing are beyond a standard clean, so just point them out to the client.</li>
+      <li><strong>Wood (teak or cedar):</strong> mild soap and water with a soft brush, going with the grain. Avoid harsh chemicals, and let it dry fully.</li>
+      <li><strong>Wicker or rattan:</strong> a soft brush and soapy water, getting into the weave. Do not soak natural wicker.</li>
+      <li><strong>Glass table tops:</strong> glass cleaner or vinegar and water, then dry for a streak free finish.</li>
+      <li><strong>Cushions and fabric:</strong> brush off debris, spot clean with mild soap and water, rinse, and stand them up to air dry fully before putting them back. Check the tag for care notes.</li>
+    </ul>
+
+    <h3>Steps and notes</h3>
+    <ul>
+      <li><strong>Clear off cobwebs and debris first,</strong> including under and behind the furniture.</li>
+      <li><strong>Work top to bottom,</strong> rinse, and dry.</li>
+      <li><strong>Let everything dry completely before replacing cushions,</strong> so mildew does not form.</li>
+    </ul>
+
+    <div class="tell"><strong>What to tell the customer:</strong> heavy mildew, rust, or weathered wood may need a dedicated outdoor product or refinishing beyond a standard clean. Point it out so they know what to expect.</div>
+  </section>
+
+  <section class="guide" id="hazards">
+    <p class="guide-num">Guide 17</p>
+    <h2>Caution and Hazards</h2>
+    <p class="intro">Your safety comes first, always. If you come across any of the items below, do not touch it or try to dispose of it. Stop, protect yourself, document it, and notify Chuka and the customer. Handling these is not part of a standard clean.</p>
+
+    <div class="warn"><strong>The rule for every hazard:</strong> do not touch it. Take a photo of the item and the area, notify Chuka right away at 832-843-1948 and text the photo, and let the customer know calmly so they can remove it. Keep your gloves on, clean around the area and not through it, and wash your hands well afterward.</div>
+
+    <h3>Items to stop for</h3>
+    <ul>
+      <li><strong>Needles or syringes.</strong> Never touch or pick these up. A needle stick is a serious health risk. Do not move furniture or reach into hidden spaces blindly where sharps could be.</li>
+      <li><strong>Blood or bodily fluids.</strong> Do not clean these with standard supplies. They can carry disease and need proper biohazard handling.</li>
+      <li><strong>Condoms or intimate products.</strong> Do not touch. Document and notify, then let the customer remove them.</li>
+      <li><strong>Drugs or drug paraphernalia of any kind.</strong> Do not touch, move, or dispose of anything that looks like drugs or related items. Photograph it, notify Chuka and the customer, and wait for direction.</li>
+    </ul>
+
+    <h3>Protect yourself</h3>
+    <ul>
+      <li><strong>Diapers, pet waste, and everyday messes can be handled.</strong> Wear gloves, bag and dispose of them properly, and wash your hands well afterward.</li>
+      <li><strong>Always wear gloves,</strong> and double them in a questionable home.</li>
+      <li><strong>Never reach into a space you cannot see,</strong> under cushions, behind toilets, or into trash, without looking first.</li>
+      <li><strong>If you ever feel unsafe, leave and call Chuka.</strong> No job is worth your health or safety.</li>
+      <li><strong>Wash your hands thoroughly</strong> after any contact with a questionable area.</li>
+    </ul>
+
+    <div class="tell"><strong>Why this matters:</strong> these items are a health risk, and handling them is not your job. Documenting and reporting protects you, protects Bee Pristine, and keeps everything clear with the customer. When in doubt, do not touch it, and call Chuka.</div>
+  </section>
+
+  <section class="guide" id="clogs">
+    <p class="guide-num">Guide 18</p>
+    <h2>Clogged Sinks and Toilets</h2>
+    <p class="intro">A clog can turn into a flood or water damage fast. Know when you can clear a minor clog and when to stop and call, so you do not make it worse.</p>
+
+    <h3>Clogged toilet</h3>
+    <ul>
+      <li><strong>Stop flushing.</strong> If the bowl is full or rising, do not flush again, since it can overflow.</li>
+      <li><strong>Use a flange plunger,</strong> the kind with an extra flap for toilets. Make a seal and plunge firmly several times.</li>
+      <li><strong>If it clears, flush once to confirm.</strong> If it does not clear after a few tries, stop.</li>
+      <li><strong>Do not use chemical drain cleaners in a toilet.</strong> They can damage it and splash back.</li>
+    </ul>
+
+    <h3>Clogged sink</h3>
+    <ul>
+      <li><strong>Remove visible gunk or hair</strong> from the drain opening first.</li>
+      <li><strong>Try a cup plunger</strong> over the drain, with the overflow hole covered, and plunge.</li>
+      <li><strong>For a slow drain, try baking soda then vinegar,</strong> let it sit, then flush with hot water. This clears light buildup.</li>
+      <li><strong>Avoid harsh chemical drain cleaners</strong> unless the client provides them and asks you to use them. They are caustic and can damage pipes and finishes.</li>
+    </ul>
+
+    <h3>When to stop and notify</h3>
+    <ul>
+      <li><strong>If plunging does not clear it,</strong> stop and let Chuka and the customer know. A stubborn clog may need a snake or a plumber.</li>
+      <li><strong>If water is backing up, leaking, or near overflowing,</strong> stop immediately, keep the area dry, and notify Chuka. Do not risk water damage.</li>
+      <li><strong>Never remove a P trap or take apart plumbing.</strong> That is beyond a standard clean.</li>
+    </ul>
+
+    <div class="tell"><strong>What to tell the customer:</strong> you can clear minor clogs, but anything stubborn or involving standing or leaking water needs a plumber. Flag it early so it gets handled before it becomes water damage.</div>
+  </section>
+
+  <section class="guide" id="pests">
+    <p class="guide-num">Guide 19</p>
+    <h2>Pests and Roaches</h2>
+    <p class="intro">Some homes have pest problems, most often roaches, ants, fleas, or bedbugs. Cleaning does not fix an infestation, and the main risk is carrying pests to the next home or to yourself. Know how to protect yourself, your equipment, and the next client.</p>
+
+    <h3>Protect yourself and your equipment</h3>
+    <ul>
+      <li><strong>Check yourself and your belongings after the job.</strong> Before you leave and before the next home, look over your clothes, shoes, bag, and caddy so you do not carry pests with you.</li>
+      <li><strong>Empty the vacuum right away.</strong> Roaches and eggs can live in the canister or bag. Empty it into an outside trash and wipe or rinse the canister so nothing travels to the next home.</li>
+      <li><strong>Keep your supplies up off the floor</strong> in a questionable home, and bag anything that touched an infested area.</li>
+      <li><strong>Wash your hands, and change clothes if needed,</strong> before the next client.</li>
+    </ul>
+
+    <h3>If the area is infested</h3>
+    <ul>
+      <li><strong>Stop if you were not told about it beforehand.</strong> If you arrive and find an active infestation that was not disclosed, do not start. Step away and call Chuka.</li>
+      <li><strong>Notify Chuka right away at 832-843-1948.</strong> Describe what you see so he can decide how to handle the job with the client.</li>
+      <li><strong>Do not try to treat the infestation.</strong> Cleaning is not pest control. That is a job for an exterminator.</li>
+      <li><strong>Take a photo if it is safe to do so,</strong> so there is a record for Chuka and the client.</li>
+    </ul>
+
+    <h3>Signs to watch for</h3>
+    <ul>
+      <li><strong>Live roaches,</strong> especially many at once or out in daylight, which usually means a heavy infestation.</li>
+      <li><strong>Droppings, egg casings, or a musty smell</strong> in cabinets, behind appliances, or under sinks.</li>
+      <li><strong>Bedbug signs</strong> such as small dark spots on mattresses, or bites. Flag these and do not move infested bedding.</li>
+    </ul>
+
+    <div class="tell"><strong>Why this matters:</strong> cleaning an infested home without precautions can spread pests to the next client and to you. Checking yourself, emptying the vacuum, and calling Chuka when it is bad protects everyone and keeps Bee Pristine's reputation clean.</div>
+  </section>
+
+  <section class="guide feature" id="photos">
+    <p class="guide-num">Guide 20</p>
+    <h2>Before and After Photos and Reviews</h2>
+    <p class="intro">Documenting your work and getting reviews grows the business, and it pays you. These are easy ways to earn extra on top of your regular pay.</p>
+
+    <h3>Photos: $25 each</h3>
+    <ul>
+      <li><strong>We pay $25 for every before photo and $25 for every after photo we use on social media.</strong> So if you feel like you did a great job, do not hesitate to document it. A strong before and after can earn you $50 and helps bring in new clients.</li>
+      <li><strong>Take clear, well lit photos</strong> of the space before you start and after you finish, from the same angle so the difference shows.</li>
+      <li><strong>Keep anything private out of frame,</strong> such as faces, personal documents, or valuables. Focus on the cleaning.</li>
+    </ul>
+
+    <h3>Reviews: $25 each</h3>
+    <ul>
+      <li><strong>Ask happy clients to leave a review on our Google page with your name attached.</strong> We pay you $25 for every review that names you as the cleaner.</li>
+      <li><strong>It helps you too.</strong> A review with your name is a personal reference you can carry with you, whether you grow with us, move to another company, or build your own clients one day.</li>
+      <li><strong>Ask at the end of the job</strong> when the client is happy with the result, and let them know it means a lot to the team.</li>
+    </ul>
+
+    <div class="tell"><strong>Bottom line:</strong> your good work is worth documenting. Photos and reviews grow Bee Pristine and put extra money in your pocket.</div>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <span class="brand">Bee Pristine</span> &nbsp;&middot;&nbsp; 832-843-1948 &nbsp;&middot;&nbsp; <a href="https://beepristine.com/">beepristine.com</a>
+</footer>
+
+<a href="#" class="toplink" id="toplink" aria-label="Back to top">&uarr; Top</a>
+
+<script>
+(function(){
+  var t=document.getElementById('toplink');
+  window.addEventListener('scroll',function(){
+    if(window.scrollY>400){t.classList.add('show');}else{t.classList.remove('show');}
+  },{passive:true});
+  t.addEventListener('click',function(e){e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});});
+})();
+</script>
+</body>
+</html>
